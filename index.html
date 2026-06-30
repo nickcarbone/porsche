@@ -1,0 +1,814 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Performance Spaces — I: The Garage in the Sky</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;0,900;1,400;1,600;1,700;1,900&family=EB+Garamond:ital,wght@0,400;0,500;1,400;1,500&family=Inter:wght@300;400;500;600&display=swap');
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --cream:   #FAF6ED;
+      --ink:     #1C1915;
+      --tobacco: #2E1F10;
+      --brass:   #B8925A;
+      --brass-dk:#8B6B3A;
+      --parch:   #EDE4D0;
+      --warm-gray:#7A6A52;
+      --lt-rule: #DDD3BB;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--cream);
+      color: var(--ink);
+      font-family: 'EB Garamond', Georgia, serif;
+      font-size: 1.125rem;
+      line-height: 1.85;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* ─── SERIES HEADER ─── */
+    .series-bar {
+      background: var(--tobacco);
+      padding: 14px 32px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .series-bar-left {
+      font-family: 'Inter', sans-serif;
+      font-size: 0.65rem;
+      font-weight: 500;
+      letter-spacing: 0.28em;
+      text-transform: uppercase;
+      color: var(--brass);
+    }
+
+    .series-bar-right {
+      font-family: 'Inter', sans-serif;
+      font-size: 0.65rem;
+      font-weight: 400;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: rgba(184,146,90,0.6);
+    }
+
+    /* ─── HERO ─── */
+    .hero {
+      background: var(--ink);
+      color: var(--cream);
+      padding: 72px 32px 80px;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .hero::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(ellipse 70% 60% at 50% 110%, rgba(46,31,16,0.7) 0%, transparent 70%);
+      pointer-events: none;
+    }
+
+    .hero-inner { position: relative; max-width: 820px; margin: 0 auto; }
+
+    .hero-section-num {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(5rem, 14vw, 9rem);
+      font-weight: 900;
+      font-style: italic;
+      line-height: 1;
+      color: rgba(184,146,90,0.18);
+      letter-spacing: -0.04em;
+      margin-bottom: -24px;
+      user-select: none;
+    }
+
+    .hero-eyebrow {
+      font-family: 'Inter', sans-serif;
+      font-size: 0.65rem;
+      font-weight: 600;
+      letter-spacing: 0.32em;
+      text-transform: uppercase;
+      color: var(--brass);
+      margin-bottom: 18px;
+    }
+
+    .hero h1 {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(2.6rem, 7vw, 5rem);
+      font-weight: 700;
+      line-height: 1.05;
+      letter-spacing: -0.02em;
+      color: var(--cream);
+      margin-bottom: 20px;
+    }
+
+    .hero-rule {
+      width: 44px;
+      height: 1px;
+      background: var(--brass);
+      margin: 0 auto 22px;
+    }
+
+    .hero-deck {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(1rem, 2vw, 1.22rem);
+      font-style: italic;
+      font-weight: 400;
+      line-height: 1.65;
+      color: rgba(250,246,237,0.72);
+      max-width: 620px;
+      margin: 0 auto 28px;
+    }
+
+    .hero-address {
+      font-family: 'Inter', sans-serif;
+      font-size: 0.68rem;
+      font-weight: 400;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: rgba(184,146,90,0.55);
+    }
+
+    /* ─── BUILDING STATS STRIP ─── */
+    .stats-strip {
+      background: var(--parch);
+      border-bottom: 1px solid var(--lt-rule);
+      padding: 28px 32px;
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 0;
+    }
+
+    .stat-cell {
+      padding: 0 24px;
+      border-right: 1px solid var(--lt-rule);
+      text-align: center;
+    }
+
+    .stat-cell:first-child { padding-left: 0; }
+    .stat-cell:last-child { border-right: none; padding-right: 0; }
+
+    .stat-val {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.8rem;
+      font-weight: 700;
+      color: var(--tobacco);
+      line-height: 1;
+      display: block;
+      margin-bottom: 5px;
+    }
+
+    .stat-label {
+      font-family: 'Inter', sans-serif;
+      font-size: 0.6rem;
+      font-weight: 500;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--warm-gray);
+    }
+
+    /* ─── ARTICLE BODY ─── */
+    .article {
+      max-width: 760px;
+      margin: 0 auto;
+      padding: 0 24px;
+    }
+
+    /* ─── LEDE ─── */
+    .lede {
+      padding: 68px 0 0;
+    }
+
+    .lede p:first-child::first-letter {
+      font-family: 'Playfair Display', serif;
+      font-size: 5rem;
+      font-weight: 900;
+      line-height: 0.8;
+      float: left;
+      margin-right: 6px;
+      margin-top: 10px;
+      color: var(--tobacco);
+    }
+
+    /* ─── BODY TEXT ─── */
+    .body-text p {
+      margin-bottom: 1.75em;
+    }
+
+    .body-text p:last-child { margin-bottom: 0; }
+
+    /* ─── SECTION BREAK ─── */
+    .section-break {
+      margin: 64px 0 48px;
+    }
+
+    .section-break-rule {
+      height: 1px;
+      background: var(--brass);
+      margin-bottom: 16px;
+    }
+
+    .section-break h2 {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(1.5rem, 3vw, 2rem);
+      font-weight: 700;
+      font-style: italic;
+      color: var(--tobacco);
+      line-height: 1.2;
+    }
+
+    .section-break-label {
+      font-family: 'Inter', sans-serif;
+      font-size: 0.6rem;
+      font-weight: 600;
+      letter-spacing: 0.28em;
+      text-transform: uppercase;
+      color: var(--brass);
+      margin-bottom: 8px;
+      display: block;
+    }
+
+    /* ─── PULL QUOTE ─── */
+    .pull-quote {
+      margin: 56px 0;
+      padding: 0 16px;
+      text-align: center;
+    }
+
+    .pull-quote-rule-top,
+    .pull-quote-rule-bot {
+      height: 1px;
+      background: var(--brass);
+    }
+
+    .pull-quote-rule-top { margin-bottom: 26px; }
+    .pull-quote-rule-bot { margin-top: 26px; }
+
+    .pull-quote blockquote {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(1.15rem, 2.5vw, 1.45rem);
+      font-style: italic;
+      font-weight: 400;
+      line-height: 1.6;
+      color: var(--tobacco);
+    }
+
+    /* ─── SPECIFICATION INVOICE ─── */
+    .spec-invoice {
+      background: var(--parch);
+      margin: 64px -24px;
+      padding: 48px 48px 40px;
+      border-top: 2px solid var(--tobacco);
+      border-bottom: 1px solid var(--lt-rule);
+    }
+
+    .invoice-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      margin-bottom: 28px;
+      padding-bottom: 16px;
+      border-bottom: 1px solid var(--lt-rule);
+    }
+
+    .invoice-title {
+      font-family: 'Inter', sans-serif;
+      font-size: 0.65rem;
+      font-weight: 600;
+      letter-spacing: 0.32em;
+      text-transform: uppercase;
+      color: var(--tobacco);
+    }
+
+    .invoice-subtitle {
+      font-family: 'Inter', sans-serif;
+      font-size: 0.6rem;
+      font-weight: 400;
+      letter-spacing: 0.12em;
+      color: var(--warm-gray);
+    }
+
+    .invoice-row {
+      display: grid;
+      grid-template-columns: 160px 1fr auto;
+      gap: 16px;
+      padding: 12px 0;
+      border-bottom: 1px solid var(--lt-rule);
+      align-items: baseline;
+    }
+
+    .invoice-row:last-of-type {
+      border-bottom: none;
+    }
+
+    .inv-cat {
+      font-family: 'Inter', sans-serif;
+      font-size: 0.62rem;
+      font-weight: 500;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--warm-gray);
+    }
+
+    .inv-item {
+      font-family: 'EB Garamond', serif;
+      font-size: 1rem;
+      color: var(--ink);
+      line-height: 1.4;
+    }
+
+    .inv-item em {
+      font-style: normal;
+      color: var(--tobacco);
+      font-weight: 500;
+    }
+
+    .inv-price {
+      font-family: 'Inter', sans-serif;
+      font-size: 0.78rem;
+      font-weight: 500;
+      color: var(--tobacco);
+      white-space: nowrap;
+      text-align: right;
+    }
+
+    .invoice-total {
+      margin-top: 20px;
+      padding-top: 16px;
+      border-top: 2px solid var(--tobacco);
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+    }
+
+    .total-label {
+      font-family: 'Inter', sans-serif;
+      font-size: 0.65rem;
+      font-weight: 600;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: var(--tobacco);
+    }
+
+    .total-amount {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.5rem;
+      font-weight: 700;
+      color: var(--tobacco);
+    }
+
+    .invoice-footnote {
+      margin-top: 12px;
+      font-family: 'Inter', sans-serif;
+      font-size: 0.6rem;
+      font-weight: 400;
+      color: var(--warm-gray);
+      font-style: italic;
+    }
+
+    /* ─── LARGE STAT BREAK ─── */
+    .mid-stat {
+      margin: 72px 0;
+      text-align: center;
+      padding: 0 16px;
+    }
+
+    .mid-stat-num {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(4rem, 12vw, 8rem);
+      font-weight: 900;
+      color: var(--tobacco);
+      line-height: 1;
+      letter-spacing: -0.04em;
+    }
+
+    .mid-stat-label {
+      font-family: 'Inter', sans-serif;
+      font-size: 0.68rem;
+      font-weight: 500;
+      letter-spacing: 0.24em;
+      text-transform: uppercase;
+      color: var(--brass-dk);
+      margin-top: 10px;
+      display: block;
+    }
+
+    .mid-stat-sub {
+      font-family: 'EB Garamond', serif;
+      font-style: italic;
+      font-size: 1rem;
+      color: var(--warm-gray);
+      margin-top: 6px;
+    }
+
+    /* ─── AMENITY GRID ─── */
+    .amenity-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1px;
+      background: var(--lt-rule);
+      margin: 56px 0;
+      border: 1px solid var(--lt-rule);
+    }
+
+    .amenity-cell {
+      background: var(--cream);
+      padding: 20px 18px;
+    }
+
+    .amenity-name {
+      font-family: 'Inter', sans-serif;
+      font-size: 0.62rem;
+      font-weight: 600;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--brass-dk);
+      margin-bottom: 6px;
+    }
+
+    .amenity-desc {
+      font-family: 'EB Garamond', serif;
+      font-size: 0.95rem;
+      color: var(--warm-gray);
+      line-height: 1.55;
+    }
+
+    /* ─── CLOSING RULE ─── */
+    .closing-rule {
+      height: 1px;
+      background: var(--lt-rule);
+      margin: 72px 0 0;
+    }
+
+    /* ─── SERIES NAV ─── */
+    .series-nav {
+      padding: 40px 0 80px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .series-nav-label {
+      font-family: 'Inter', sans-serif;
+      font-size: 0.6rem;
+      font-weight: 500;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: var(--warm-gray);
+      margin-bottom: 6px;
+    }
+
+    .series-nav-title {
+      font-family: 'Playfair Display', serif;
+      font-size: 1rem;
+      font-style: italic;
+      color: var(--tobacco);
+    }
+
+    .series-nav-next {
+      text-align: right;
+    }
+
+    /* ─── FOOTER ─── */
+    footer {
+      background: var(--tobacco);
+      color: rgba(250,246,237,0.45);
+      padding: 36px 32px;
+      font-family: 'Inter', sans-serif;
+      font-size: 0.62rem;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      text-align: center;
+      line-height: 1.8;
+    }
+
+    footer strong { color: rgba(184,146,90,0.7); font-weight: 500; }
+
+    /* ─── RESPONSIVE ─── */
+    @media (max-width: 640px) {
+      .stats-strip { grid-template-columns: repeat(2, 1fr); gap: 16px; }
+      .stat-cell { border-right: none; border-bottom: 1px solid var(--lt-rule); padding: 0 0 16px; }
+      .stat-cell:nth-child(2), .stat-cell:last-child { border-bottom: none; }
+      .series-bar { flex-direction: column; gap: 4px; text-align: center; }
+      .spec-invoice { margin: 64px -24px; padding: 32px 24px 28px; }
+      .invoice-row { grid-template-columns: 110px 1fr auto; gap: 8px; }
+      .amenity-grid { grid-template-columns: 1fr; }
+      .series-nav { flex-direction: column; gap: 24px; text-align: center; }
+      .series-nav-next { text-align: center; }
+    }
+
+    @media print {
+      body { background: white; color: #000; font-size: 11pt; }
+      .hero { background: #000; }
+      .series-bar { background: #000; }
+      footer { background: #333; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- SERIES BAR -->
+<div class="series-bar">
+  <span class="series-bar-left">Performance Spaces &nbsp;·&nbsp; I of IV</span>
+  <span class="series-bar-right">Porsche Design Tower &nbsp;·&nbsp; Miami &nbsp;·&nbsp; 2026</span>
+</div>
+
+<!-- HERO -->
+<header class="hero">
+  <div class="hero-inner">
+    <div class="hero-section-num" aria-hidden="true">I</div>
+    <div class="hero-eyebrow">The Garage in the Sky</div>
+    <h1>Where the Car<br>Is the Art</h1>
+    <div class="hero-rule"></div>
+    <p class="hero-deck">Inside the Porsche Design Tower, the world's only residential building with a robotic car elevator that delivers your Lamborghini to your living room — and what that says about everyone who bought one.</p>
+    <div class="hero-address">18555 Collins Avenue &nbsp;·&nbsp; Sunny Isles Beach, Florida &nbsp;·&nbsp; Est. 2016</div>
+  </div>
+</header>
+
+<!-- STATS STRIP -->
+<div class="stats-strip">
+  <div class="stat-cell">
+    <span class="stat-val">60</span>
+    <span class="stat-label">Storeys</span>
+  </div>
+  <div class="stat-cell">
+    <span class="stat-val">132</span>
+    <span class="stat-label">Units (2 floors each)</span>
+  </div>
+  <div class="stat-cell">
+    <span class="stat-val">3</span>
+    <span class="stat-label">Dezervators</span>
+  </div>
+  <div class="stat-cell">
+    <span class="stat-val">$32.5M</span>
+    <span class="stat-label">Penthouse (each)</span>
+  </div>
+</div>
+
+<!-- ARTICLE -->
+<main class="article">
+
+  <!-- LEDE -->
+  <div class="lede body-text">
+
+    <p>On the Intracoastal Waterway in Sunny Isles Beach, at that hour in November when the winter light goes amber before it goes away entirely, the tower reads as a specific kind of promise. From a boat moving north — an Azimut sixty footer, perhaps, or a Sunseeker Manhattan carrying residents of the private dock three miles south toward dinner at Nobu Bal Harbour — the Porsche Design Tower announces itself the way everything in South Florida announces itself: with straight lines and glass and the absolute certainty that it arrived exactly as planned. Sixty storeys, full-height glazing, terrace pools on every floor cascading down the facade like a vertical water feature, blue in the last of the afternoon light.</p>
+
+    <p>What the tower does not immediately announce, from this angle, is what it contains. Look carefully, through the gap between two terraces somewhere around the forty-first floor, and you might catch something that takes a moment to read correctly. A shape behind glass. Low and wide and unmistakably Italian. Yellow. It is not a piece of furniture. It is not an installation. It is a Lamborghini Huracán, and it is parked in a room that opens directly onto the apartment's living space through a wall of floor-to-ceiling plate glass, and it is lit the way a gallery lights a Caravaggio. The car is displayed. The car is the art. The car is, in every architectural intention of the word, the point.</p>
+
+    <p>This is the building's premise. This is also, if you sit with it long enough, its confession.</p>
+
+  </div>
+
+
+  <div class="section-break">
+    <div class="section-break-rule"></div>
+    <span class="section-break-label">The Engineering</span>
+    <h2>A Robot That Handles Your Ferrari</h2>
+  </div>
+
+  <div class="body-text">
+
+    <p>The Porsche Design Tower at 18555 Collins Avenue is a joint venture between Dezer Development and the Porsche Design Group — not Porsche the automobile manufacturer, whose Stuttgart engineers make the 911 that several residents presumably keep in the sky garage, but Porsche Design, the Austrian lifestyle brand founded by Ferdinand Alexander Porsche in 1972, whose primary output is sunglasses, watches, and the licensing of a design language to projects that wish to associate themselves with the word "precision" without having to justify it. The relationship is, in the history of aspirational branding partnerships, among the more efficient. Dezer got the name. Porsche Design got a royalty and a building that made international headlines for a decade.</p>
+
+    <p>The building itself was designed by Sieger Suarez Architects, a Miami firm whose portfolio runs primarily to luxury residential towers on this same barrier island, and its sixty storeys house one hundred and thirty-two units that each occupy two floors — making this, technically, a building of two-storey residences stacked sixty high above a stretch of Collins Avenue that has been, since Dezer's father Michael helped develop it in the 1970s, the most concentrated deposit of luxury condominiums in South Florida. Each unit runs between 3,130 and 6,121 square feet across its two floors, with ceilings that reach ten feet on the lower level and twenty on the principal entertaining floor, which is the kind of specification that sounds reasonable until you consider that twenty-foot ceilings in a room you are inhabiting at altitude is an architectural choice more commonly associated with the nave of a cathedral.</p>
+
+    <p>But the building's defining feature — its party trick, its headline, the reason it appeared in the New York Times, the Guardian, CNN, the BBC, and approximately every architecture and luxury publication on Earth in 2016 — is the Dezervator. United States Patent Number 9,106,999. A robotic car elevator. Named for the developer. There are three of them, their mechanical systems meeting in the building's concrete core, each designated to serve a specific cluster of units. The process, which has been described so many times that it has taken on the quality of a fable: you drive your vehicle onto a circular rotating pad on the ground floor. A sled jack emerges from the machine and lifts the car by all four wheels. The elevator door closes around you. Seventy-five seconds later, the door opens on your floor — a journey that in a standard residential tower would deposit you at a lobby and require you to navigate the further indignities of a car park — and your vehicle is slid sideways on its sled into the glass-enclosed sky garage that forms part of your apartment's floor plan. The car is in the room. You may remain in the driver's seat throughout, if you choose. Many residents apparently do.</p>
+
+    <p>Dezer spent four years developing the Dezervator before the building opened. He built a prototype in an empty lot in Chicago. The system was tested by UL, the independent safety certification body, over a period that required rather more rigour than the usual residential elevator because the usual residential elevator does not transport a four-hundred-thousand-dollar automobile while the owner sits inside it at altitude. The patent was issued. The system was certified. And then it was installed in three iterations in a sixty-storey building on a barrier island in North Miami-Dade County, where it has been lifting Ferraris and Lamborghinis and McLarens to their owners' living rooms, at a rate of approximately one floor per second, ever since.</p>
+
+  </div>
+
+
+  <!-- PULL QUOTE 1 -->
+  <div class="pull-quote">
+    <div class="pull-quote-rule-top"></div>
+    <blockquote>"The building contains one hundred and thirty-two units and — per the developer's count — twenty-two billionaires. That would be roughly one-sixth of the world's total billionaire population at a single address on a two-mile barrier island. The number invites a certain skepticism. The building also contains a race simulator, which is a different kind of evidence."</blockquote>
+    <div class="pull-quote-rule-bot"></div>
+  </div>
+
+
+  <div class="section-break">
+    <div class="section-break-rule"></div>
+    <span class="section-break-label">The Specification</span>
+    <h2>What Ten Million Dollars Buys You in a Bathroom</h2>
+  </div>
+
+  <div class="body-text">
+
+    <p>Strip away the car elevator — set aside, for a moment, the patent and the prototype and the seventy-five-second journey — and what remains is a building whose interior specifications represent an argument, made in plumbing fixtures and kitchen cabinetry and sanitary technology, about what an apartment should feel like when money has been applied to every available surface without restraint or irony.</p>
+
+    <p>The bathroom fixtures are Dornbracht. This requires some explanation for anyone who has not encountered the brand, which is based in Iserlohn, in Germany's Sauerland region, an area of the country whose contribution to European industrial history runs to steel mills and precision manufacturing and an abiding conviction that the objects through which water travels to reach your body should be engineered with the same seriousness as an optical instrument. Dornbracht has been making luxury plumbing fixtures since 1950. Its Tara Logic series — the specification in the Porsche Tower's bathrooms — features a faucet engineered to produce a laminar flow so geometrically precise that the water column emerging from its spout appears, under certain bathroom lighting, to be a solid object: a bar of water rather than a stream of it. The faucet retails at somewhere between two thousand and six thousand euros, depending on finish — brushed platinum, matte black, polished gold — and surface treatment. The Supernova overhead shower panel installed in the master bathrooms of the upper floors — a twelve-inch disc of brushed stainless steel mounted flush to the ceiling, its entire surface perforated to deliver a uniform rain rather than a concentrated jet — costs rather more than that. Dornbracht does not publish its prices online. In the luxury fixture industry, this is itself a form of communication: if you need to ask, the conversation has already gone wrong.</p>
+
+    <p>The kitchens are Poggenpohl. Poggenpohl has been making German cabinetry since 1892, a longevity that predates the automobile, predates residential electricity as a broadly accessible technology, and predates every luxury kitchen brand that subsequently attempted to position itself as the standard against which other kitchens are measured. The company has been making the same essential argument — that the space in which you prepare food should be designed with the rigour and material quality of a precision instrument, and that this costs money, and that the money is worth spending — for a hundred and thirty years without significant revision. The P-Origin kitchen, the specification in these units, features motorised cabinet doors that respond to the presence of a hand by opening in complete silence, at a pace that suggests a mechanism performing a considered action rather than executing a command. The doors close with the same deliberation. The island — large, in these units, in the way that a small country has a large GDP — is a single surface of engineered stone, seamless, without visible joints. A Poggenpohl kitchen at this specification costs somewhere between eighty thousand and two hundred and fifty thousand euros, depending on dimensions and the complexity of the storage architecture. This does not include appliances.</p>
+
+    <p>The appliances are Miele. Miele is the German manufacturer whose domestic washing machine — sold at approximately four thousand dollars, tested to last twenty years, requiring no service for the duration of that period if operated correctly — has become a cultural reference point for Germanic over-engineering applied to everyday objects. In the context of a Poggenpohl kitchen, the Miele washing machine is not the point. The point is the induction cooktop, which runs to eight thousand dollars, and the combi steam oven, which adds another five or six, and the integrated dishwasher, which handles crystal with a delicacy more often associated with museum conservators, and the wine climate control cabinet — dual temperature zones, UV-protective glass front, vibration dampening mechanisms to prevent disturbance to settling sediment, because the vibration of building systems at altitude is a known variable in cellar management — which costs more than all of the above. Miele's product philosophy holds that a domestic appliance should outlast several iterations of the design culture that produced it. In a building where residents may visit twice a year, this is less reassuring than it sounds.</p>
+
+    <p>And then there are the toilets. The toilets are Toto. Specifically the Neorest NX2, which represents the summit of one Japanese company's decades-long project to revisit the fundamental premise of a toilet — that it is a static receptacle requiring manual operation and producing no particular experience — and replace it with something more considered. The Neorest NX2's seat heats to a user-specified temperature. The lid rises as you approach, triggered by a proximity sensor, and descends after you leave. The personal cleansing system — water pressure, water temperature, oscillation frequency, drying temperature and duration — is controlled by a wall-mounted panel that has received design awards in Japan, Germany, and the United States. The ambient light can be adjusted. There is an option for sound masking. The deodoriser operates continuously and silently. The Neorest NX2 retails at approximately twenty-two thousand dollars. Toto describes it as "the apex of Washlet technology." They mean this literally and without apparent irony. There is no higher expression of this form. You may spend twenty-two thousand dollars on a toilet in the knowledge that you have reached the absolute boundary of what human ingenuity has so far achieved in that particular direction, and that the only remaining improvement would require a different kind of toilet entirely.</p>
+
+  </div>
+
+  <!-- SPECIFICATION INVOICE -->
+  <div class="spec-invoice">
+    <div class="invoice-header">
+      <span class="invoice-title">Unit Specification &nbsp;·&nbsp; Fixtures &amp; Finishes</span>
+      <span class="invoice-subtitle">Porsche Design Tower &nbsp;·&nbsp; Approximate retail values</span>
+    </div>
+
+    <div class="invoice-row">
+      <span class="inv-cat">Bathrooms</span>
+      <span class="inv-item"><em>Dornbracht</em> Tara Logic series — faucets, shower valves, deck mounts. Supernova ceiling shower (master bath). Brushed platinum finish throughout.</span>
+      <span class="inv-price">€18,000–45,000</span>
+    </div>
+
+    <div class="invoice-row">
+      <span class="inv-cat">Sanitary</span>
+      <span class="inv-item"><em>Toto</em> Neorest NX2 — heated seat, proximity-activated lid, oscillating cleanse, integrated deodoriser, remote panel. Per unit (3 bathrooms).</span>
+      <span class="inv-price">$66,000</span>
+    </div>
+
+    <div class="invoice-row">
+      <span class="inv-cat">Kitchen</span>
+      <span class="inv-item"><em>Poggenpohl</em> P-Origin — motorised cabinet doors, engineered stone island, handleless drawer system. Full kitchen configuration.</span>
+      <span class="inv-price">€120,000–200,000</span>
+    </div>
+
+    <div class="invoice-row">
+      <span class="inv-cat">Appliances</span>
+      <span class="inv-item"><em>Miele</em> — induction hob, combi steam oven, speed microwave, integrated dishwasher, wine climate cabinet (dual zone), integrated refrigeration column.</span>
+      <span class="inv-price">$42,000</span>
+    </div>
+
+    <div class="invoice-row">
+      <span class="inv-cat">Outdoor</span>
+      <span class="inv-item">Private plunge pool (10×15 ft, heated) — every terrace. Summer kitchen, <em>Miele</em> outdoor appliance suite. Terrace area 800–1,600 sq ft.</span>
+      <span class="inv-price">$60,000–90,000</span>
+    </div>
+
+    <div class="invoice-row">
+      <span class="inv-cat">Sky Garage</span>
+      <span class="inv-item">Climate-controlled glass-enclosed car gallery, full-floor-height glazing to living room. 2–4 vehicle capacity depending on unit. <em>Dezervator</em> access.</span>
+      <span class="inv-price">incl.</span>
+    </div>
+
+    <div class="invoice-total">
+      <span class="total-label">Fixtures &amp; Finishes Total (approx., per unit)</span>
+      <span class="total-amount">$380,000–520,000</span>
+    </div>
+    <p class="invoice-footnote">Excluding unit purchase price ($5M–$32.5M), structural amenity access, parking, and any bespoke owner upgrades. Car not included.</p>
+  </div>
+
+
+  <div class="body-text">
+    <p>What is striking about this specification — not as a list, but as a philosophy — is its precision of ambition. Each item occupies the topmost available position in its category. Not near the top. Not among the best. At the terminus. The Toto Neorest NX2 is not A very good toilet; it is the best toilet that exists. The Dornbracht Tara Logic faucet is not A very good faucet; it is the product against which other serious faucets are measured. The Poggenpohl kitchen is not A very well-appointed kitchen; it is a kitchen that has been in production, in various iterations, since the Austro-Hungarian Empire. The cumulative effect of specifying every item at the outer boundary of its category is not comfort in any conventional sense. It is a sustained argument, made in materials and mechanism, that this apartment occupies a position beyond which no apartment can go. The specification is the claim. The claim is the amenity.</p>
+  </div>
+
+
+  <!-- LARGE STAT -->
+  <div class="mid-stat">
+    <div class="mid-stat-num">75</div>
+    <span class="mid-stat-label">seconds &nbsp;·&nbsp; ground floor to your door, in your car</span>
+    <p class="mid-stat-sub">The time it takes the Dezervator to deliver a Lamborghini Aventador to the 43rd floor.<br>The time it takes to decide whether this is engineering genius or something else entirely.</p>
+  </div>
+
+
+  <div class="section-break">
+    <div class="section-break-rule"></div>
+    <span class="section-break-label">The Amenities</span>
+    <h2>The Sports That Require a Room</h2>
+  </div>
+
+  <div class="body-text">
+    <p>The amenity floor contains items that indicate a particular theory of what residents do when not inside their units contemplating the car. The restaurant operates with individual wine lockers reserved per residence: not a shared wine list but a physical locker, in which your wines live between visits, managed by the building's staff, from which specific bottles are retrieved to your table when you dine. This arrangement requires a wine collection significant enough to justify a dedicated locker, which in turn requires either a serious engagement with viticulture or the acquisition of enough investment-grade Burgundy to fill the space. The building does not specify which.</p>
+  </div>
+
+  <!-- AMENITY GRID -->
+  <div class="amenity-grid">
+    <div class="amenity-cell">
+      <div class="amenity-name">Race Simulator</div>
+      <div class="amenity-desc">Full-motion professional rig, stadium seating for two. The kind used by Formula 1 teams for driver training between sessions. Not the kind found in arcades.</div>
+    </div>
+    <div class="amenity-cell">
+      <div class="amenity-name">Golf Simulator</div>
+      <div class="amenity-desc">Full swing, full course replication. Available because golf is the other sport the demographic plays — the one that requires less horsepower and more patience.</div>
+    </div>
+    <div class="amenity-cell">
+      <div class="amenity-name">Private Wine Locker</div>
+      <div class="amenity-desc">One per unit. In the building's restaurant, holding the owner's personal cellar. Retrieved by staff on request. The restaurant visits you.</div>
+    </div>
+    <div class="amenity-cell">
+      <div class="amenity-name">Sunset Swim Spas</div>
+      <div class="amenity-desc">Two oversized turbulent spas on the Intracoastal terrace, for the resident who has spent the afternoon in their private terrace pool and requires a change of water.</div>
+    </div>
+    <div class="amenity-cell">
+      <div class="amenity-name">Residents' Spa</div>
+      <div class="amenity-desc">Full treatment menu. For the same reasons any building at this price point has a spa: the negotiation between what you spent and what you receive must appear endless.</div>
+    </div>
+    <div class="amenity-cell">
+      <div class="amenity-name">Beauty Salon</div>
+      <div class="amenity-desc">On-site. Because the building's design philosophy is predicated on never needing to interact with the public, and this extends to hair.</div>
+    </div>
+  </div>
+
+  <div class="body-text">
+    <p>The logic of the amenity programme, taken as a whole, is the logic of completion. The building has tried to anticipate every reason you might leave and has installed a version of that reason on a lower floor, so that leaving becomes optional. You can dine, be groomed, drive a racing car around a digital track, and practice your approach shot on the fourteenth hole of Augusta National, all without stepping outside. This is presented as convenience. It is also, at some angle, a description of a very comfortable enclosure.</p>
+  </div>
+
+
+  <!-- PULL QUOTE 2 -->
+  <div class="pull-quote">
+    <div class="pull-quote-rule-top"></div>
+    <blockquote>"The building's designer said it was about the car. The developer said it was about privacy. Neither of them said it was about loneliness, which is not the same thing as saying it isn't."</blockquote>
+    <div class="pull-quote-rule-bot"></div>
+  </div>
+
+
+  <div class="section-break">
+    <div class="section-break-rule"></div>
+    <span class="section-break-label">The Demographic</span>
+    <h2>Who Is Buying This, and Why</h2>
+  </div>
+
+  <div class="body-text">
+
+    <p>Sunny Isles Beach is a barrier island in North Miami-Dade County that is approximately two miles long and at its widest point less than a quarter mile across. On its western side runs the Intracoastal Waterway; on its eastern side is the Atlantic Ocean; and on both sides are boats that cost more than the median American home. The island is what happens when a hotel corridor decides to become a residential neighbourhood: tower after luxury tower running north along Collins Avenue, each with a slightly more extravagant claim to amenity than its neighbour, each rising above the palm line with the confident verticality of an argument that will not be interrupted.</p>
+
+    <p>The neighbourhood has been called Little Moscow since the late 1990s, when Russian-speaking buyers from the post-Soviet diaspora discovered that this island's then-modest beachfront condominiums offered Miami's climate and legal stability at prices that felt, by the standards of what they were accustomed to elsewhere, almost reasonable. The name has not aged accurately. The Porsche Tower's buyer demographic has shifted substantially over the decade since its opening, following larger patterns in the movement of global private capital. The primary buyer profile now runs to Latin American business wealth — Venezuelan industrial families who began diversifying their holdings internationally in the early 2010s, Colombian money that has been consistently treating Miami as its preferred offshore address for longer than that, Brazilian capital that has determined that the combination of Florida's legal infrastructure, its geography relative to São Paulo, and its weather in February offers advantages unavailable in other markets. Political instability is not mentioned in the Porsche Tower's marketing materials. In the luxury residential market, it never is. It doesn't need to be. Everyone in the room knows why the room exists.</p>
+
+    <p>The building's developer has claimed, at various points in various interviews, that twenty-two of his one hundred and thirty-two residents are billionaires — a proportion that would, if accurate, represent approximately one-sixth of the world's total billionaire population at a single address on a two-mile sandbar in South Florida. The number is difficult to verify and invites a certain skepticism. What is verifiable is the specification of the cars that the Dezervator carries. Dezer has noted, on more than one occasion, that his residents "generally have cars that cost upwards of three million dollars." At that price point, the selection narrows considerably: you are in the territory of the Ferrari LaFerrari, the Porsche 918 Spyder, the Bugatti Veyron and its successors, the Lamborghini Sián, the Mercedes-AMG One. These are not transportation. They are depreciating investments with combustion engines, whose primary purpose, in a world of private drivers and helicopter transfers, is to exist as objects of appreciation. The sky garage, with its glass wall and its gallery lighting, is simply the logical extension of the object's own aspiration. The car was always going to end up behind glass.</p>
+
+  </div>
+
+
+  <div class="section-break">
+    <div class="section-break-rule"></div>
+    <span class="section-break-label">The Thesis</span>
+    <h2>The Private Museum, Population: One</h2>
+  </div>
+
+  <div class="body-text">
+
+    <p>Here is what the developer said, in an interview that has been quoted so many times it has settled into the record as the building's defining statement: "Unit owners can be driving any car. They come into the elevator, up to the unit, nobody bothers them. You don't need to have a valet, you don't have paparazzi taking pictures. That's our customer base and our clients." The building's foundational premise, in this reading, is not about cars at all. It is about privacy. The Dezervator is not an amenity; it is a mechanism for arriving and departing without being observed, without generating the friction of human contact, without the moment of exposure that a valet represents — the transfer of a valuable object to a stranger, the brief appearance in a lobby, the small documentation of your presence that a witness inevitably creates.</p>
+
+    <p>This is true of every building in this survey. The desire to arrive without being seen, to occupy a city without becoming part of its civic record, to be present and to leave no trace — this is the recurring theme of ultra-premium residential architecture. What makes the Porsche Tower unusual is that it pursues this goal through a mechanism that is, inherently, spectacular. The Dezervator is not discreet. It is a robotic arm in a glass elevator shaft transporting a quarter-million-dollar automobile. It generates its own attention, its own headlines, its own mythology. Every journalist who has written about this building has written primarily about the car elevator, because the car elevator is the most interesting thing that has happened to the concept of parking since the parking lot was invented. The building that was designed to make its residents invisible has become the most written-about residential tower in South Florida, specifically because of the machine that was supposed to hide them.</p>
+
+    <p>And then there is the sky garage itself. The room — not a parking space, a room, carpeted, lit, climate-controlled, its entrance shared with the private entrance lobby of the unit — is separated from the main living space by a wall of floor-to-ceiling glass. This is an architectural choice, presented in the marketing as a feature. It is not incidental. The car is always visible from the living room. The car is always lit. The car is, in every sense available to this building's design language, displayed. You have spent, let us say, four hundred thousand dollars on an object of Italian craftsmanship, engineering at the absolute frontier of what its category is capable of producing. You have removed it from the world's gaze by elevating it to the forty-third floor of a building on a barrier island in North Miami-Dade County, placing it behind a proprietary robotic system that keeps it away from the eyes of valets and photographers and anyone else who might witness it. And you have then installed it in a glass case in your own living room, where it faces you across a transparent wall every time you sit down to breakfast, or pour a glass of something from the Miele wine cabinet, or set the Toto toilet lid in motion with your approach.</p>
+
+    <p>The audience is you. The performance is continuous. You have assembled a private museum with a collection of one object — perhaps three or four objects, in the larger penthouses, in which case you are a curator — and you are both the artist and the only visitor, simultaneously, at altitude, with the Atlantic and the Intracoastal visible through the other walls, the city grid below resolving itself from chaos into pattern as you rise. This is not what anyone means when they say they appreciate art. But it is what the building means when it says it is about cars. The car is the art. The gallery is the point. And the gallery has never, and will never, be open to the public.</p>
+
+    <p>What the Porsche Design Tower has understood — and what its success, its complete sellout, its sequel across the street in the form of Bentley Residences where four Dezervators await a new generation of collectors, confirms — is that at a sufficient concentration of wealth, luxury stops being about comfort. Comfort is a solved problem. You can buy the Dornbracht faucet, the Poggenpohl kitchen, the Toto toilet that has reached the apex of its technology, and these things will make your daily life marginally more pleasant and will not make a discernible difference to your overall wellbeing, because your overall wellbeing is not a plumbing question. What you are actually purchasing, in the sky garage and the specification invoice and the Dezervator and the amenity floor with its race simulator and its individual wine lockers, is a language. A vocabulary of objects that says something precise about your position in a hierarchy that has its own grammar, its own syntax, its own rules about what counts as the correct answer.</p>
+
+    <p>The correct answer, in this building, is: the car. The car parked at eye level through plate glass, lit for appreciation, accessible by robotic elevator, held at altitude above a city that will never quite see it. You have arrived. The machine has confirmed it. The door closes behind you, and you are home, and there is no one else here, and the view from the living room is extraordinary, and through the glass the car is waiting, and it will be there in the morning, and the morning after that, whenever you return.</p>
+
+  </div>
+
+
+  <!-- PULL QUOTE 3 -->
+  <div class="pull-quote">
+    <div class="pull-quote-rule-top"></div>
+    <blockquote>"You have assembled a private museum with a collection of one object and you are simultaneously the artist, the curator, and the only visitor — at altitude, with the Atlantic on one side and the Intracoastal on the other, and a car facing you through plate glass every morning when you come downstairs."</blockquote>
+    <div class="pull-quote-rule-bot"></div>
+  </div>
+
+
+  <!-- CLOSING -->
+  <div class="body-text" style="padding-bottom: 32px;">
+    <p>The Dezervator opens on the ground floor. You drive in. The door closes. Seventy-five seconds later, on whatever floor you live, the door opens and the sled extends and your car arrives in its room, facing the glass, in the light. You get out. The machine retracts. You walk through the door into your apartment and the city below is dark and the Intracoastal is silver and through the glass behind you the Ferrari or the Lamborghini or the Porsche sits exactly where it is supposed to sit, doing exactly what it is supposed to do.</p>
+
+    <p>Which is nothing, really. But it does it beautifully.</p>
+  </div>
+
+
+  <!-- SERIES NAV -->
+  <div class="closing-rule"></div>
+  <div class="series-nav">
+    <div class="series-nav-prev">
+      <div class="series-nav-label">Series</div>
+      <div class="series-nav-title">Performance Spaces</div>
+    </div>
+    <div class="series-nav-next">
+      <div class="series-nav-label">Next &nbsp;·&nbsp; II of IV</div>
+      <div class="series-nav-title">Central Park Tower, New York</div>
+    </div>
+  </div>
+
+</main>
+
+<!-- FOOTER -->
+<footer>
+  <strong>Performance Spaces</strong> is a four-part series on the world's most extravagant residential high-rises.<br>
+  Part I: Porsche Design Tower, Miami &nbsp;·&nbsp; Part II: Central Park Tower, New York<br>
+  Part III: Tour Odéon, Monaco &nbsp;·&nbsp; Part IV: One Barangaroo, Sydney<br><br>
+  All specifications sourced from building marketing materials, patent filings, and manufacturer retail documentation.
+  Approximate prices reflect current market conditions and vary by configuration and finish. Car not included.
+</footer>
+
+</body>
+</html>
